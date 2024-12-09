@@ -20,6 +20,15 @@ const home = () => {
     fetchUser();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem("user");
+      router.replace("/");
+    } catch (error) {
+      console.warn("err removing user");
+    }
+  };
+
   return (
     <SafeAreaView className="flex-1">
       <View className="flex-1 justify-center items-center">
@@ -31,6 +40,7 @@ const home = () => {
             />
             <Text className=" text-black">{user.name}</Text>
             <Text className=" text-black">{user.email}</Text>
+            <Button title="logout" onPress={handleLogout} />
           </View>
         ) : (
           <Text>Loading...</Text>
