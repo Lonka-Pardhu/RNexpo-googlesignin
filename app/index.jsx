@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   GoogleSignin,
@@ -7,8 +7,9 @@ import {
   statusCodes,
 } from "@react-native-google-signin/google-signin";
 import { signIn } from "../components/auth";
-import { useRouter } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
 import { storeUser } from "../utils/storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID, // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
@@ -25,19 +26,33 @@ GoogleSignin.configure({
 
 const Index = () => {
   const router = useRouter();
+  const [user, setUser] = useState(null);
 
-  const handleSignIn = async () => {
-    const response = await signIn();
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await AsyncStorage.getItem("user");
+        setUser(JSON.parse(user));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUser();
+  }, []);
 
-    if (response) {
-      console.log(JSON.stringify(response.data.user));
-      await storeUser(JSON.stringify(response.data.user));
-
-      router.replace("/home");
-    } else {
-      console.warn("Sign-In failed:", response.error);
+  const handleSignin = async () => {
+    try {
+      const response = await signIn();
+      await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
+      router.push("/home");
+    } catch (error) {
+      console.log(error);
     }
   };
+
+  if (user) {
+    return <Redirect href={"/home"} />;
+  }
 
   return (
     <SafeAreaView className="flex-1">
@@ -45,7 +60,7 @@ const Index = () => {
         <GoogleSigninButton
           size={GoogleSigninButton.Size.Wide}
           color={GoogleSigninButton.Color.Dark}
-          onPress={handleSignIn}
+          onPress={handleSignin}
         />
       </View>
     </SafeAreaView>

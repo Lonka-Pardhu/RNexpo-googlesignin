@@ -2,41 +2,38 @@ import { View, Text, SafeAreaView, Button, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 import { getUser, removeUser } from "../utils/storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const home = () => {
-  const [user, setUser] = useState(null);
   const router = useRouter();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const storedUser = await getUser();
-        if (storedUser) {
-          setUser(JSON.parse(storedUser));
-        }
+        const user = await AsyncStorage.getItem("user");
+        setUser(JSON.parse(user));
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.log(error);
       }
     };
     fetchUser();
   }, []);
 
-  const handleLogout = async () => {
-    await removeUser();
-    router.replace("/");
-  };
   return (
-    <SafeAreaView>
+    <SafeAreaView className="flex-1">
       <View className="flex-1 justify-center items-center">
         {user ? (
-          <View>
-            <Image source={{ uri: user.photo }} />
-            <Text>{user.name}</Text>
-            <Text>{user.email}</Text>
-            <Button title="Logout" onPress={handleLogout} />
+          <View className="items-center">
+            <Image
+              source={{ uri: user.photo }}
+              style={{ width: 100, height: 100, borderRadius: 50 }}
+            />
+            <Text className=" text-black">{user.name}</Text>
+            <Text className=" text-black">{user.email}</Text>
           </View>
         ) : (
-          <Text>Loading user data...</Text>
+          <Text>Loading...</Text>
         )}
       </View>
     </SafeAreaView>
