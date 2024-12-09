@@ -2,6 +2,7 @@
   "expo": {
     "name": "supabasetest",
     "slug": "supabasetest",
+    "scheme": "supabasetest",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,10 +19,30 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.dummy08.supabasetest"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.469775609823-2gahs6n8ml9lq6safmu9de791r23j9u1"
+        }
+      ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "3829dfb8-38e8-407f-83eb-fde1b65f5aed"
+      }
+    },
+    "owner": "dummy08"
   }
 }
