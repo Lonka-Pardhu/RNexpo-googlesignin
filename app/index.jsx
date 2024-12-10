@@ -6,9 +6,8 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
-import { signIn } from "../components/auth";
+import { signIn } from "../services/auth";
 import { Redirect, useRouter } from "expo-router";
-import { storeUser } from "../utils/storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 GoogleSignin.configure({

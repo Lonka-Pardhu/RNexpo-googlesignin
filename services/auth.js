@@ -15,7 +15,6 @@ export const signIn = async () => {
         provider: "google",
         token: response.data.idToken,
       });
-      console.log(error, data);
     } else {
       throw new Error("no ID token present!");
     }

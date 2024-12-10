@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 import { getUser, removeUser } from "../utils/storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 const home = () => {
   const router = useRouter();
@@ -22,6 +23,7 @@ const home = () => {
 
   const handleLogout = async () => {
     try {
+      await GoogleSignin.signOut();
       await AsyncStorage.removeItem("user");
       router.replace("/");
     } catch (error) {
