@@ -1,7 +1,6 @@
 import { View, Text, SafeAreaView, Button, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-import { getUser, removeUser } from "../utils/storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
